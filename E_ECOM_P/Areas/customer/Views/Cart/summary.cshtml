@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "summary";
+}
+
+<h1>summary</h1>
+
+@using Microsoft.Extensions.Options
+@model E_COM_Models.ViewModels.ShoppingCartVM
+@inject IOptions<E_EOM_Utility.StripeSetting> Stripe;
+
+@* This single form posts everything (address fields + which payment option was clicked)
+   to CartController -> SummaryPost. No asp-action is set, so it submits to the
+   current URL (/Customer/Cart/summary), which maps to the "summary" POST action. *@
+<form method="post">
+    <br />
+    <div class="backgroundWhiteBorder">
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Order Summary
+                    </div>
+                    <div class="col-6 text-right">
+                        <a class="btn btn-outline-info btn-sm" asp-action="Index">Back to Cart</a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="container rounded p-2">
+                        <div class="row">
+                            <!-- PickUp Details -->
+                            <div class="col-12 col-lg-6 pb-4">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">PickUp Details:</span>
+                                </h4>
+                                <div class="form-group mb-3">
+                                    <label for="RecentAddress">Select a Recent Address:</label>
+                                    <select id="RecentAddress" class="form-control">
+                                        <option value="">-- Select Address --</option>
+                                        @foreach (var address in Model.RecentAddresses)
+                                        {
+                                            <option value="@($"{address.StreetAddress}, {address.City}, {address.State}, {address.PostalCode}")">
+                                                @($"{address.StreetAddress}, {address.City}, {address.State}, {address.PostalCode}")
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <div class="row my-1">
+                                    <div class="col-12 col-sm-3"><label>Name</label></div>
+                                    <div class="col-12 col-sm-9">
+                                        <input type="text" asp-for="@Model.OrderHeader.Name" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row my-1">
+                                    <div class="col-12 col-sm-3"><label>Phone</label></div>
+                                    <div class="col-12 col-sm-9">
+                                        <input type="text" asp-for="@Model.OrderHeader.PhoneNumber" class="form-control" />
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row my-1">
+                                    <div class="col-12 col-sm-3"><label>Street Address</label></div>
+                                    <div class="col-12 col-sm-9">
+                                        <input type="text" asp-for="@Model.OrderHeader.StreetAddress" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row my-1">
+                                    <div class="col-12 col-sm-3"><label>City</label></div>
+                                    <div class="col-12 col-sm-9">
+                                        <input type="text" asp-for="@Model.OrderHeader.City" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row my-1">
+                                    <div class="col-12 col-sm-3"><label>State</label></div>
+                                    <div class="col-12 col-sm-9">
+                                        <input type="text" asp-for="@Model.OrderHeader.State" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row my-1">
+                                    <div class="col-12 col-sm-3"><label>Postal Code</label></div>
+                                    <div class="col-12 col-sm-9">
+                                        <input type="text" asp-for="@Model.OrderHeader.PostalCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary -->
+                            <div class="col-12 col-lg-5 offset-lg-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">Order Summary:</span>
+                                </h4>
+
+                                <ul class="list-group mb-3">
+                                    @foreach (var item in Model.Listcart)
+                                    {
+                                        <div>
+                                            <strong>@item.Product.Title</strong> - Quantity: @item.count - Price: ₹@item.Product.price × @item.count = ₹@(item.Product.price* item.count)
+                                        </div>
+                                    }
+
+                                    <h4>Total: ₹@Model.OrderHeader.OrderTotal</h4>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col-md-8 pt-2">
+                            <p style="color:maroon; font-size:14px;">
+                                Estimate Arrival Date:
+                                @DateTime.Now.AddDays(7).ToShortDateString() -
+                                @DateTime.Now.AddDays(14).ToShortDateString()
+                            </p>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+
+                            @* Auto-fill address fields when a recent address is picked from the dropdown *@
+                            <script>
+                                document.getElementById("RecentAddress").addEventListener("change", function () {
+                                    var selected = this.value;
+                                    if (selected) {
+                                        var parts = selected.split(",");
+                                        document.getElementById("StreetAddress").value = parts[0]?.trim();
+                                        document.getElementById("City").value = parts[1]?.trim();
+                                        document.getElementById("State").value = parts[2]?.trim();
+                                        document.getElementById("PostalCode").value = parts[3]?.trim();
+                                    }
+                                });
+                            </script>
+
+                            @* Two submit buttons sharing the same "paymentOption" field name.
+                               Whichever button is clicked, its value ("now" or "later") is the
+                               one sent to SummaryPost in the controller. *@
+                            <div class="d-grid gap-2 text-monospace">
+                                <button type="submit" name="paymentOption" value="now" class="btn btn-success">
+                                    Pay with Card (Stripe)
+                                </button>
+                                <button type="submit" name="paymentOption" value="later" class="btn btn-outline-secondary mt-2">
+                                    Pay Later
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

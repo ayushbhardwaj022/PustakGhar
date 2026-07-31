@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary">Category List</h2>
+    </div>
+    <div class="col-3">
+        <a asp-action="Upsert" class="btn btn-info form-control">
+            <i class="fas fa-plus">Add New Category</i>
+        </a>
+    </div>
+</div>
+<div class="container rounded border p-2 m-2">
+    <div class="table-responsive">
+        <table id="tbldata" class="table table-bordered table-striped table-active">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Action</th>@* <!edit and delete></!edit> *@
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>  @* java script file accessed on index page *@
+
+@section scripts                         {
+    <script src="~/js/Category.js"></script>
+}

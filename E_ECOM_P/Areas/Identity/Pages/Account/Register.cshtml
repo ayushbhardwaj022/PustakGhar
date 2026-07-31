@@ -1,0 +1,256 @@
+﻿@page
+@model RegisterModel
+@using E_EOM_Utility
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>Create a new account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+             <div class="mb-3">
+                <label asp-for="Input.Name" class="form-label">Name</label>
+                <input asp-for="Input.Name" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter Your Name" />
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3">
+                <label asp-for="Input.StreetAddress" class="form-label">Street Address</label>
+                <input asp-for="Input.StreetAddress" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter Your Street Address" />
+                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+            </div>
+
+             <div class="mb-3">
+                <label asp-for="Input.PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" maxlength="10" inputmode="numeric" pattern="\d*" placeholder="Enter Your Phone Number" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.State" class="form-label">State</label>
+                <select asp-for="Input.State" class="form-control" id="stateSelect" aria-required="true">
+                    <option value="">-- Select State --</option>
+                </select>
+                <span asp-validation-for="Input.State" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.City" class="form-label">City</label>
+                <select asp-for="Input.City" class="form-control" id="citySelect" aria-required="true">
+                    <option value="">-- Select State First --</option>
+                </select>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.PostalCode" class="form-label">Postal Code</label>
+                <input asp-for="Input.PostalCode" class="form-control" autocomplete="username" aria-required="true" maxlength="6" inputmode="numeric" pattern="\d*" placeholder="Enter Your Postal Code" />
+                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label">Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter Your Email" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="mb-3 position-relative">
+                <label asp-for="Input.Password" class="form-label">Password</label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" id="passwordInput" placeholder="Enter Your Password" />
+                <span class="toggle-password" onclick="togglePwd('passwordInput', this)">👁</span>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3 position-relative">
+                <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" id="confirmPasswordInput" placeholder="Re-enter Your Password" />
+                <span class="toggle-password" onclick="togglePwd('confirmPasswordInput', this)">👁</span>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            @if(User.IsInRole(SD.Role_Admin))
+            {
+                <div class="form-group row">
+                    <label asp-for="Input.Role"></label>
+                    <select asp-for="Input.Role" asp-items="Model.Input.RoleList" class="form-control">
+                        <option value="">Select Role</option>
+                    </select>
+                    <span asp-validation-for="Input.Role" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group row">
+                    <label asp-for="Input.CompanyId"></label>
+                    <select asp-for="Input.CompanyId" asp-items="Model.Input.CompanyList" class="form-control">
+                        <option value="">Select Company </option>
+                    </select>
+                    <span asp-validation-for="Input.CompanyId" class="text-danger"></span>
+                </div>
+
+            }
+
+
+
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-2">Register</button>
+        </form>
+    </div>
+    <div class="col-md-6 offset-md-2">
+        <section>
+            <h3>Use another service to register.</h3>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                            about setting up this ASP.NET application to support logging in via external services</a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    {
+                                        string iconClass = provider.Name switch
+                                        {
+                                            "Facebook" => "fab fa-facebook-f",
+                                            "Google" => "fab fa-google",
+                                            "Instagram" => "fab fa-instagram",
+                                            "Reddit" => "fab fa-reddit-alien",
+                                            _ => "fas fa-sign-in-alt"
+                                        };
+
+                                        string btnClass = provider.Name switch
+                                        {
+                                            "Facebook" => "btn-social-facebook",
+                                            "Google" => "btn-social-google",
+                                            "Instagram" => "btn-social-instagram",
+                                            "Reddit" => "btn-social-reddit",
+                                            _ => "btn-secondary"
+                                        };
+
+                                        <button type="submit" class="btn btn-social @btnClass me-2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                            <i class="@iconClass"></i> @provider.DisplayName
+                                        </button>
+                                    }
+
+
+
+
+
+
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <style>
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 38px;
+            cursor: pointer;
+            user-select: none;
+            opacity: 0.6;
+        }
+    </style>
+    <script>
+        function togglePwd(id, el) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                el.style.opacity = 1;
+            } else {
+                input.type = "password";
+                el.style.opacity = 0.6;
+            }
+        }
+
+        // Digits-only enforcement (blocks typing and pasting non-digits)
+        document.addEventListener("DOMContentLoaded", function () {
+            ["Input_PhoneNumber", "Input_PostalCode"].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener("input", function () {
+                    el.value = el.value.replace(/\D/g, "");
+                });
+            });
+        });
+
+        // State -> City cascading dropdown
+        const stateCityMap = {
+            "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati"],
+            "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur"],
+            "Chhattisgarh": ["Raipur", "Bhilai", "Bilaspur", "Durg"],
+            "Delhi": ["New Delhi", "Dwarka", "Rohini", "Saket"],
+            "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+            "Haryana": ["Kaithal", "Gurugram", "Faridabad", "Panipat", "Karnal", "Hisar"],
+            "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru"],
+            "Kerala": ["Kochi", "Thiruvananthapuram", "Kozhikode", "Thrissur"],
+            "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur"],
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik"],
+            "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar"],
+            "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli"],
+            "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar"],
+            "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida", "Ghaziabad", "Varanasi", "Agra"],
+            "Uttarakhand": ["Dehradun", "Haridwar", "Nainital", "Rishikesh"],
+            "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri"]
+        };
+
+        const stateSelect = document.getElementById("stateSelect");
+        const citySelect = document.getElementById("citySelect");
+
+        Object.keys(stateCityMap).sort().forEach(function (state) {
+            const opt = document.createElement("option");
+            opt.value = state;
+            opt.textContent = state;
+            stateSelect.appendChild(opt);
+        });
+
+        stateSelect.addEventListener("change", function () {
+            citySelect.innerHTML = "";
+            const placeholder = document.createElement("option");
+            placeholder.value = "";
+            const cities = stateCityMap[stateSelect.value];
+
+            if (!cities) {
+                placeholder.textContent = "-- Select State First --";
+                citySelect.appendChild(placeholder);
+                return;
+            }
+
+            placeholder.textContent = "-- Select City --";
+            citySelect.appendChild(placeholder);
+            cities.forEach(function (city) {
+                const opt = document.createElement("option");
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+        });
+    </script>
+}

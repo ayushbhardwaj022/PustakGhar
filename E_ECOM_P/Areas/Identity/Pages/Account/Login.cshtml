@@ -1,0 +1,140 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form id="account" method="post">
+                <h2>Use a local account to log in.</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <div class="position-relative">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" id="loginPasswordInput" />
+                        <span class="toggle-password" onclick="toggleLoginPwd()">👁</span>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mt-2">
+                        <span id="login-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span id="login-btn-text">Log in</span>
+                    </button>
+                </div>
+                <div class="mt-3">
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    </p>
+                    <p>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-6 offset-md-2">
+        <section>
+            <h3>Use another service to log in.</h3>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                            about setting up this ASP.NET application to support logging in via external services</a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    string iconClass = provider.Name switch
+                                    {
+                                        "Facebook" => "fab fa-facebook-f",
+                                        "Google" => "fab fa-google",
+                                        "Instagram" => "fab fa-instagram",
+                                        "Reddit" => "fab fa-reddit-alien",
+                                        _ => "fas fa-sign-in-alt"
+                                    };
+                                    string btnClass = provider.Name switch
+                                    {
+                                        "Facebook" => "btn-social-facebook",
+                                        "Google" => "btn-social-google",
+                                        "Instagram" => "btn-social-instagram",
+                                        "Reddit" => "btn-social-reddit",
+                                        _ => "btn-secondary"
+                                    };
+
+                                    <button type="submit" class="btn btn-social @btnClass me-2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        <i class="@iconClass"></i> @provider.DisplayName
+                                    </button>
+                                }
+
+
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <style>
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+            opacity: 0.6;
+        }
+    </style>
+    <script>
+        function toggleLoginPwd() {
+            const input = document.getElementById("loginPasswordInput");
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        document.getElementById("account").addEventListener("submit", function (e) {
+            const emailInput = document.getElementById("Input_Email");
+            if (emailInput) {
+                emailInput.value = emailInput.value.trim();
+            }
+            if (!this.checkValidity()) {
+                return; // let normal validation messages show
+            }
+            document.getElementById("login-spinner").classList.remove("d-none");
+            document.getElementById("login-btn-text").textContent = "Logging in...";
+            document.getElementById("login-submit").disabled = true;
+        });
+    </script>
+}

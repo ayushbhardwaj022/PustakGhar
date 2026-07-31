@@ -1,0 +1,51 @@
+﻿@model E_COM_Models.CoverType
+
+@{
+    var title = Model.id != 0 ? "Edit CoverType" : "New CoverType";
+    var saveupdate = Model.id != 0 ? "Update" : "save";
+
+}
+<form method="post">
+    <div class="col-10">   @* border given *@
+        <h2 class="text-primary">@title</h2>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-8">
+        <div class="form-group row">
+            <div class="col-4">
+                <label asp-for="Name"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        @* <div class="form-group row p-2 m-2">
+            <div class="col-4 offset-4">
+                <button type="submit" class="btn btn-info form-control">
+                    @saveupdate
+                </button>
+            </div>
+            <div class="col-4 offset-4">
+                <a asp-action="Index" class="btn btn-success form-control">
+                    Back To List
+                </a>
+            </div>
+        </div> *@
+        <div class="form-group p-2 m-2">
+            <div class="col-8 offset-4">
+                @if(Model.id!=0)
+                {
+                    <partial name="_EditandBacktolist" />
+                }
+                else{
+                <partial name="_CreateandBacktolist" />
+                }
+            </div>
+        </div>
+    </div>
+    @section Scripts
+    {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</form>

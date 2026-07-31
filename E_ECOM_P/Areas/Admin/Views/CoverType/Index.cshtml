@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary">CoverType List</h2>
+    </div>
+    <div class="col-3">
+        <a asp-action="Upsert" class="btn btn-info form-control">
+            <i class="fas fa-plus"> Add New Covertype </i>
+        </a>
+    </div>
+</div>
+<div class="container rounded border p-2 m-2">
+    <div class="table-responsive">
+        <table id="tbldata" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    @* <th>Name</th>
+                    <th>Action</th> *@      
+                    <th>Edit</th>             @* aise likhne see edit pehle covertype name beech me and delete button last me as per customization *@
+                    <th>Name</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/CoverType.js"></script>
+}

@@ -1,0 +1,330 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+body, p, a, span, li, button, input, textarea {
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, .navbar-brand, .card-title {
+  font-family: 'Playfair Display', serif;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background-color: #f7f8fa;
+}
+
+/* PustakGhar theme - Navy & Gold */
+.pustak-navbar {
+  background: #0f172a;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
+
+.pustak-navbar .nav-link,
+.pustak-navbar .navbar-brand {
+  color: #f8fafc !important;
+  font-weight: 500;
+}
+
+.pustak-navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.pustak-navbar .nav-link:hover {
+  color: #38bdf8 !important;
+}
+
+footer.pustak-footer {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  color: #cbd5e1;
+  padding: 48px 0 20px;
+  margin-top: 60px;
+}
+
+.footer-heading {
+  color: #38bdf8;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+}
+
+.footer-text {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.footer-links, .footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li, .footer-contact li {
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+}
+
+.footer-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+  color: #38bdf8;
+}
+
+.footer-contact li {
+  color: #cbd5e1;
+}
+
+.footer-contact i {
+  width: 18px;
+  color: #38bdf8;
+  margin-right: 6px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 36px;
+}
+
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  transition: all 0.15s ease;
+}
+
+.footer-social a:hover {
+  background: #38bdf8;
+  color: #0f172a;
+  transform: translateY(-2px);
+}
+
+.footer-divider {
+  border-color: rgba(203, 213, 225, 0.15);
+  margin: 28px 0 16px;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  padding-bottom: 8px;
+}
+
+/* Navbar buttons */
+.btn-3d {
+  background: #2563eb;
+  color: #fff;
+  border: 1.5px solid #2563eb;
+  border-radius: 10px;
+  padding: 9px 24px;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.15);
+  transition: all 0.15s ease;
+}
+
+.btn-3d:hover {
+  color: #fff;
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+}
+
+.btn-3d:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.15);
+}
+
+.btn-3d-outline {
+  background: transparent;
+  color: #38bdf8 !important;
+  border: 1.5px solid #38bdf8;
+  border-radius: 10px;
+  padding: 9px 24px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-3d-outline:hover {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8 !important;
+  border-color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.btn-3d-logout {
+  background: transparent;
+  color: #f8fafc !important;
+  border: 1.5px solid rgba(248, 250, 252, 0.5);
+  border-radius: 10px;
+  padding: 9px 24px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-3d-logout:hover {
+  background: rgba(248, 250, 252, 0.12);
+  color: #f8fafc !important;
+  border-color: #f8fafc;
+  transform: translateY(-1px);
+}
+
+/* Product cards */
+.card {
+  border: 1px solid #ebedf1;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(15, 28, 63, 0.14) !important;
+}
+
+.card-img-top {
+  height: 260px;
+  object-fit: cover;
+}
+
+.card-title {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.btn-primary {
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.15);
+  transition: all 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  background: #1d4ed8;
+}
+
+/* Category filter pills */
+.category-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+
+.category-pill {
+  background: #fff;
+  color: #0f172a;
+  border: 2px solid #dde1e8;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.category-pill:hover {
+  border-color: #38bdf8;
+  color: #2563eb;
+}
+
+.category-pill.active {
+  background: #0f172a;
+  color: #38bdf8;
+  border-color: #0f172a;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.15);
+}
+
+/* Form labels - bold, clear */
+.form-label {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+/* Colored social login buttons */
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  color: #fff !important;
+  transition: all 0.15s ease;
+}
+
+.btn-social:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.95);
+  color: #fff !important;
+}
+
+.btn-social-facebook {
+  background: #1877f2;
+}
+
+.btn-social-google {
+  background: #ea4335;
+}
+
+.btn-social-instagram {
+  background: radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.btn-social-reddit {
+  background: #ff4500;
+}
+@media (max-width: 767px) {
+  .card-img-top {
+    height: 200px;
+  }
+  .pustak-navbar .navbar-brand {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .col-md-3 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
